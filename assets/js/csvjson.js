@@ -1,5 +1,3 @@
-//require('papaparse');
-
 //var file = File.createFromFileName("path/to/some/file");
 
 //var csvFiles = document.querySelectorAll(".csv");
@@ -29,18 +27,9 @@ var myConfig = {
 };
 
 function csvJson(file) {
-    //    for (var i = 0; i < csvFiles.length; i++) {
-    //        Papa.parse(csvFiles[i].file, {
     Papa.parse(file, myConfig);
-    //         {
-    //            complete: function (results) {
-    //                console.log("Finished:", results.data);
-    //            }
-    //        });
-    //    }
 }
 
 function CJDone(results, file) {
     importNames (results.data);
-//    console.log("Finished:", results.data);
 }
