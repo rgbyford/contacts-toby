@@ -31,6 +31,11 @@ $(document).ready(function () {
         //        alert($('#tag-dept').val());
     });
 
+    //var FCData = require ("./database.js");
+    //var fcData = new FCData();
+
+    var aoResults = [{}];
+
     $('#search').click(function () {
         //        sMain = $('#tag-main').val();
         sDept = $('#tag-dept').val();
@@ -47,9 +52,32 @@ $(document).ready(function () {
         if (sLocIntl === 'intl') {
             sLocUSA = 'any';
         }
-        aoResults = queryDB(sDept, sLocUSA, sLocIntl);
+        aoResults = queryDB(sDept, sLocUSA, sLocIntl); // shows the results
         //        console.log(aoResults);
     });
+
+    $('.names').on('click', (function () {
+        const id = event.target.id;
+        const sPhone = aoResults[id].oContact['Phone1-Value'];
+        getContact(sPhone).then(function (resolve, reject) {
+            if (resolve.status == 404) {
+                var sorry = document.createElement("p");
+                sorry.textContent = 'Sorry.  No image.';
+                document.getElementById(id).appendChild(sorry);
+            } else {
+                var img = document.createElement("img");
+                img.src = resolve.avatar;
+                img.id = "picture";
+                img.width = '150';
+                document.getElementById(id).appendChild(img);
+                $('#picture').attr("style", "display:block");
+            }
+            var phone = document.createElement("p");
+            phone.textContent = sPhone;
+            document.getElementById(id).appendChild(phone);
+
+        });
+    }));
 
     $("#locUSA").click(function () {
         fillUSA();

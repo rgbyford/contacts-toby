@@ -105,7 +105,7 @@ function queryDB(tag1, tag2, tag3) {
                     if (aoDocsFinal[index].oContact != undefined && aoDocsFinal[index].oContact.GivenName != undefined) {
                         //                    console.log(aoDocsFinal[index].oContact.GivenName + " " + aoDocsFinal[index].oContact.FamilyName);
                         //                        $("#name-list").empty();
-                        $("#name-list").append($('<p>')
+                        $("#name-list").append($(`<p id="${index}">`)
                             .html(aoDocsFinal[index].oContact.GivenName + " " + aoDocsFinal[index].oContact.FamilyName)
                         );
                     }
@@ -119,6 +119,7 @@ function queryDB(tag1, tag2, tag3) {
         .catch(err => {
             console.log("Get error " + err);
         });
+    return (aoDocsFinal);
 }
 
 //importNames();
@@ -166,15 +167,14 @@ function importNames(data) {
                         // look for .locn and add "intl" if it's not _USA
                         if (asFirstSplit[i].indexOf(".loc_U") < 0) {
                             sTemp = asFirstSplit[i].replace(".loc", "intl");
-                        }
-                        else {
+                        } else {
                             sTemp = asFirstSplit[i];
                         }
-//                        asSecondSplit = asSecondSplit.concat(asFirstSplit[i].split('_'));
+                        //                        asSecondSplit = asSecondSplit.concat(asFirstSplit[i].split('_'));
                         asSecondSplit = asSecondSplit.concat(sTemp.split('_'));
                         //                        asSecondSplit.push (asFirstSplit[i].split ('_'));
                     }
-//                    let asTemp = arrayUnique(asSecondSplit);
+                    //                    let asTemp = arrayUnique(asSecondSplit);
                     oContact[sPropName] = arrayUnique(asSecondSplit);
                 } else {
                     let value = nestedContent[docTitle];
