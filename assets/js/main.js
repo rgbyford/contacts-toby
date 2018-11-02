@@ -19,10 +19,13 @@ $(document).ready(function () {
 
     $('#files').change(function () {
         handleFileSelect(event);
-    })
+    });
 
     $('#tag-dept').change(function () {
         sSelectedDept = $('#tag-dept').val();
+        if (sSelectedDept == 'c') {
+            showSubDept();
+        }
         //        alert($('#tag-dept').val());
     });
 
@@ -35,10 +38,16 @@ $(document).ready(function () {
     //var fcData = new FCData();
 
     var aoResults = [{}];
+    var asSubDepts = [];
 
     $('#search').click(function () {
         //        sMain = $('#tag-main').val();
         sDept = $('#tag-dept').val();
+        var n = $("input:checked").length;
+        var boxes = $('input[name=cbox]:checked');
+        //            console.log (boxes[0].value);
+        //            console.log (boxes[1].value);
+
         if (sLocIntl != 'any' && sLocIntl != "none") {
             sLocIntl = $('#tag-loc').val();
         } else if (sLocIntl === 'any') {
@@ -52,7 +61,12 @@ $(document).ready(function () {
         if (sLocIntl === 'intl') {
             sLocUSA = 'any';
         }
-        aoResults = queryDB(sDept, sLocUSA, sLocIntl); // shows the results
+        sLocUSA = 'any';        // too many without location
+        sLocIntl = 'any';       // ditto
+        for (let i = 0; i < boxes.length; i++) {
+            //            asSubDepts[i] = boxes[i].value;
+            aoResults = queryDB(boxes[i].value, sLocUSA, sLocIntl); // shows the results
+        }
         //        console.log(aoResults);
     });
 
@@ -97,7 +111,6 @@ $(document).ready(function () {
         sLocUSA = 'none';
     });
 
-
     //    document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
     let aTagsMain = [
@@ -128,6 +141,35 @@ $(document).ready(function () {
         ['pd', 'production design'],
         ['w', 'writing']
     ];
+    let aasCinematograpy = [
+        ['1st-AC', ''],
+        ['2nd-AC', ''],
+        ['2nd-unit-cinematographer', ''],
+        ['best-kid_electric', ''],
+        ['best-kid_grip', ''],
+        ['broadcasting', ''],
+        ['BTS', ''],
+        ['camera-op', ''],
+        ['camera-op_underwater', ''],
+        ['camera-pa', ''],
+        ['cinematographer', ''],
+        ['cinematographer_macro', ''],
+        ['DIT', ''],
+        ['DIY', ''],
+        ['drone-op', ''],
+        ['electric', ''],
+        ['electrician', ''],
+        ['g&e', ''],
+        ['gaffer', ''],
+        ['grip', ''],
+        ['key-grip', ''],
+        ['livestream', ''],
+        ['photographer', ''],
+        ['shooter', ''],
+        ['steadicam', ''],
+        ['switcher', '']
+    ];
+
     let aTagsLocIntl = [
         ['any', 'any'],
         ['Asia', ''],
@@ -174,11 +216,9 @@ $(document).ready(function () {
             ['austin', 'Austin'],
             ['chicago', 'Chicago'],
             ['Colorado', 'Colorado'],
-            ['Colorado', ''],
             ['Dc', 'Washington DC'],
             ['Denver', ''],
             ['east-coast', 'East Coast'],
-            ['eastcoast', 'East Coast'],
             ['eastcoast', 'East Coast'],
             ['FL', 'Florida'],
             ['houston', 'Houston'],
@@ -188,13 +228,13 @@ $(document).ready(function () {
             ['Midwest', 'MidWest'],
             ['midwest', 'MidWest'],
             ['minnesota', 'Minnesota'],
-            ['Missouri', 'Missouri'],
+            ['Missouri', ''],
             ['Nashville', 'Nashville'],
             ['Nebraska', 'Nebraska'],
             ['new_england', 'New England'],
             ['New_Mexico', 'New Mexico'],
             ['NYC', 'New York City'],
-            ['Philadelphia', 'Philadelphia'],
+            ['Philadelphia', ''],
             ['portland', 'Portland'],
             ['Seattle', ''],
             ['seattle', 'Seattle'],
@@ -217,11 +257,11 @@ $(document).ready(function () {
             .html(aTagsDept[i][1] === '' ? aTagsDept[i][0] : aTagsDept[i][1])
         );
     }
-    // for (let i = 0; i < aTagsMain.length; i++) {
-    //     $("#tag-main").append($("<option>")
-    //         .val(aTagsMain[i][0])
-    //         .html(aTagsMain[i][1] === '' ? aoTagsMain[i][0] : aoTagsMain[i][1])
-    //     );
-    // }
 
-});
+    function showSubDept() {
+        for (let i = 0; i < aasCinematograpy.length; i++) {
+            //        $(`type=checkbox name=${i}`)
+            $(".sub-dept").append(`<input type='checkbox' name='cbox' value='${aasCinematograpy[i][0]}'>${aasCinematograpy[i][0]}<br>`);
+        }
+    }
+})
